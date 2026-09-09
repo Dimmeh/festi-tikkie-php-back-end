@@ -37,6 +37,7 @@ function get_products(PDO $pdo): void
         $round = (new GetData($pdo))->by_where(
             select: RoundFields::ALL,
             from: "fta_invite_rounds",
+            from_alias: "invrou",
             where: ["invrou_id = :invrou_id"],
             execute: ["invrou_id" => $rou_id],
             fetch_once: true

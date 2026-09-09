@@ -35,7 +35,7 @@ function postData(PDO $pdo, array $data, array $files){
   }
 
   if ($usr_profile_photo === null || $usr_profile_photo["error"] !== UPLOAD_ERR_OK) {
-    sendErrorMessage(500, "De profielfoto kon niet worden geüploaded.")
+    sendErrorMessage(500, "De profielfoto kon niet worden geüploaded.");
   }
 
   $usr_password_hash = password_hash($usr_password, PASSWORD_DEFAULT);

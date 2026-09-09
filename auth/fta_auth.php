@@ -26,6 +26,7 @@ function authCheck(PDO $pdo){
     $user = (new GetData($pdo)->by_where(
                 select: UserFields::ALL_WITHOUT_PASSWORD, 
                 from: "fta_users", 
+                from_alias: "usr",
                 where: ["usr_id = :usr_id"],
                 execute: ["usr_id" => $_SESSION["usr_id"]],
                 fetch_once: true

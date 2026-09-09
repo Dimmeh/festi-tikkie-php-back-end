@@ -102,6 +102,7 @@ function post_data(
     $current_group = (new GetData($pdo)->by_where(
         select: ["gro_id", "gro_creator_id", "gro_profile_photo_url"],
         from: "fta_groups",
+        from_alias: "gro",
         where: ["gro_id = :gro_id"],
         execute: ["gro_id" => $gro_id],
         fetch_once: true
@@ -240,6 +241,7 @@ function edit_group(
         $current_members = (new GetData($pdo)->by_where(
             select: ['usr_id'],
             from: "fta_group_users",
+            from_alias: "grus",
             where: ["gro_id = :gro_id"],
             execute: ["gro_id" => $gro_id]
         ));

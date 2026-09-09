@@ -139,6 +139,7 @@ function create_round_invitation(
                 "invrou_id"
             ],
             from: "fta_invite_rounds",
+            from_alias: "invrou",
             where: [
                 "invrou_creator_id = :usr_id",
                 "invrou_status = 1"

@@ -37,6 +37,7 @@ function ping_data(PDO $pdo): void
                 "COUNT(*) AS total_users"
             ],
             from: "fta_invited_users",
+            from_alias: "invusr",
             where: ["invrou_id = :invrou_id"],
             execute:["invrou_id" => $invrou_id],
             fetch_once:true
@@ -46,6 +47,7 @@ function ping_data(PDO $pdo): void
                 "COUNT(DISTINCT usr_id) AS total_orders"
             ],
             from: "fta_ordered_products",
+            from_alias: "invrou",
             where: ["invrou_id = :invrou_id"],
             execute:["invrou_id" => $invrou_id],
             fetch_once:true

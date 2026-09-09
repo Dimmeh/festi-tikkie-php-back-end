@@ -102,6 +102,7 @@ function create_order(
             $round_invite = (new GetData($pdo))->by_where(
                 select: ['invrou_creator_id'],
                 from: "fta_invite_rounds",
+                from_alias: "invrou",   
                 where: ["invrou_id = :invrou_id"],
                 execute:["invrou_id" => $invrou_id],
                 fetch_once: true

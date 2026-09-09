@@ -2,10 +2,10 @@
 
     class LocationFields{
         public const ALL = [
-            "proloc_id",
-            "evn_id",
-            "proloc_name",
-            "proloc_created_at",
-            "proloc_updated_at"
+            "proloc.proloc_id",
+            "proloc.evn_id",
+            "proloc.proloc_name",
+            "proloc.proloc_created_at",
+            "proloc.proloc_updated_at"
         ];
     }

@@ -36,6 +36,7 @@ function get_locations(PDO $pdo): void
         $locations = (new GetData($pdo))->by_where(
             select: LocationFields::ALL,
             from: "fta_product_locations",
+            from_alias: "proloc",
             where:["evn_id = :evn_id"],
             execute:["evn_id" => $evn_id],
             order_by:["proloc_name ASC"]

@@ -12,15 +12,18 @@
          * @param array $select Kolommen die opgehaald moeten worden.
          *                      Voorbeeld: ["example_id", "example_name", "example_group"] of ExampleFields::ALL
          * @param string $from  Naam van de tabel
-         *                      Voorbeeld: "example_table"
+         *                      Voorbeeld: "example_table".
+         * @param string $from_alias        Alias voor de hoofdtabel.
+         *                                  Voorbeeld: "exa".
+         * 
          * @param array $order_by           Orderen op kolomnaam.
          *                                  Voorbeeld: ["exa.example_name ASC"].
          * @return array
          */
-        public function all(array $select, string $from, array $order_by = []):array{
+        public function all(array $select, string $from, string $from_alias , array $order_by = []):array{
             $query = (new SelectQueryBuilder())
                 ->select(...$select)
-                ->from($from);
+                ->from($from, $from_alias);
                 
 
             if ($order_by !== []) {
@@ -40,6 +43,8 @@
          *                          Voorbeeld: ["example_id", "example_name", "example_group"] of ExampleFields::ALL
          * @param string $from      Naam van de tabel
          *                          Voorbeeld: "example_table"
+         * @param string $from_alias        Alias voor de hoofdtabel.
+         *                                  Voorbeeld: "exa".
          * @param array $where      WHERE-conditie
          *                          Voorbeeld: ["example_id = :example_id", "example_name" = :example_name] 
          *                          // :example_id & :example_name zijn de placeholders voor de execute()
@@ -53,6 +58,7 @@
         public function by_where(
             array $select, 
             string $from, 
+            string $from_alias, 
             array $where, 
             array $execute, 
             bool $fetch_once = false,
@@ -60,7 +66,7 @@
         ):array | false{
             $query = (new SelectQueryBuilder())
                 ->select(...$select)
-                ->from($from)
+                ->from($from, $from_alias)
                 ->where(...$where);
 
             if ($order_by !== []) {

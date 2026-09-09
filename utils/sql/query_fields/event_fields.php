@@ -2,16 +2,16 @@
 
     class EventFields {
         public const ALL_WITH_CURRENCY = [
-            "c.cur_id",
-            "c.cur_name",
-            "c.cur_code",
-            "c.cur_symbol",
-            "c.cur_type",
-            "c.cur_display_position",
-            "c.cur_singular",
-            "c.cur_plural",
-            "c.cur_decimal_places",
-            "e.evn_id",
-            "e.evn_name"
+            "cur.cur_id",
+            "cur.cur_name",
+            "cur.cur_code",
+            "cur.cur_symbol",
+            "cur.cur_type",
+            "cur.cur_display_position",
+            "cur.cur_singular",
+            "cur.cur_plural",
+            "cur.cur_decimal_places",
+            "evn.evn_id",
+            "evn.evn_name"
         ];
     }

@@ -47,6 +47,7 @@ function get_data(PDO $pdo){
                 "grus_id"
             ],
             from: "fta_group_users",
+            from_alias: "grus",
             where: [
                 "gro_id = :group_id",
                 "usr_id = :user_id",
@@ -74,6 +75,7 @@ function get_data(PDO $pdo){
                 "gro_creator_id"
             ],
             from: "fta_groups",
+            from_alias: "gro",
             where: [
                 "gro_id = :group_id"
             ],

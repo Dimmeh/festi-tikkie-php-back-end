@@ -1,6 +1,7 @@
 <?php
 
 include_once __DIR__ . "/../config/index.php";
+include_once __DIR__ . "/../sql/query_fields/user_fields.php";
 
 new CorsHeaders('application/json', 'GET, OPTIONS', 'Content-Type', 'true');
 
@@ -26,6 +27,7 @@ function friendcodeCheck($pdo, $friendcode){
     $user = (new GetData($pdo)->by_where(
       select: UserFields::ALL_WITHOUT_PASSWORD, 
       from: "fta_users",
+      from_alias: "usr",
       where: ["usr = :friendcode", "usr_id != :usr_id"],
       execute: ["friendcode" => $friendcode, "usr_id" => $_SESSION["usr_id"]],
       fetch_once: true));
