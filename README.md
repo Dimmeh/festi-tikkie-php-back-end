@@ -63,3 +63,7 @@ Met Festi-Tikkie kan per ronde worden bijgehouden wie er meedoet, wat iedereen b
 ## Status
 
 Festi-Tikkie is momenteel nog in ontwikkeling.
+
+## Related repositories
+
+[Festi-Tikkie Frontend](https://github.com/Dimmeh/festi-tikkie)
