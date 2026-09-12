@@ -7,6 +7,7 @@ class SelectQueryBuilder
     private array $from = [];
     private array $joins = [];
     private array $order_by = [];
+    private array $group_by = [];
     private bool $distinct = false;
     private bool $for_update = false;
 
@@ -28,6 +29,10 @@ class SelectQueryBuilder
             ? ''
             : ' ORDER BY ' . implode(', ', $this->order_by);
 
+        $group_by = $this->group_by === []
+            ? ''
+            : ' GROUP BY ' . implode(', ', $this->group_by);
+
         $for_update = $this->for_update
             ? ' FOR UPDATE'
             : '';
@@ -40,6 +45,7 @@ class SelectQueryBuilder
             . $join
             . $where
             . $order_by
+            . $group_by
             . $for_update;
     }
 
@@ -114,6 +120,13 @@ class SelectQueryBuilder
     public function order_by_raw(string $order): self
     {
         $this->order_by[] = $order;
+
+        return $this;
+    }
+
+    public function group_by(string $group): self
+    {
+        $this->group_by[] = $group;
 
         return $this;
     }

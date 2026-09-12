@@ -35,8 +35,16 @@
 
         public const PRODUCT_WITH_USER = [
             ...UserFields::DISPLAY_USER,
+            "pro.pro_id",
             "pro.pro_name",
             "pro.pro_price",
             "ordpro.ordpro_amount"
+        ];
+
+        public const SUMMARY_ORDER = [
+            "pro.pro_name",
+            "pro.pro_price",
+            "SUM(ordpro.ordpro_amount) AS pro_total_amount",
+            "SUM(pro.pro_price * ordpro.ordpro_amount) AS pro_total_price"
         ];
     }

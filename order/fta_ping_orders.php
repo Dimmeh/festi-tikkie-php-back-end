@@ -38,7 +38,10 @@ function ping_data(PDO $pdo): void
             ],
             from: "fta_invited_users",
             from_alias: "invusr",
-            where: ["invrou_id = :invrou_id"],
+            where: [
+                "invusr.invrou_id = :invrou_id",
+                "invusr.invusr_status IN ('joined', 'invited')"
+            ],
             execute:["invrou_id" => $invrou_id],
             fetch_once:true
         );
@@ -48,7 +51,7 @@ function ping_data(PDO $pdo): void
             ],
             from: "fta_ordered_products",
             from_alias: "invrou",
-            where: ["invrou_id = :invrou_id"],
+            where: ["invrou.invrou_id = :invrou_id"],
             execute:["invrou_id" => $invrou_id],
             fetch_once:true
         );
@@ -59,6 +62,13 @@ function ping_data(PDO $pdo): void
                 "total_orders" => (int) $orders['total_orders'],
             ]
         ]);
+
+        // sendSuccessMessage("Succesvol data opgehaald", [
+        //     "data"=> [
+        //         "users" => $users,
+        //         "orders" => $orders
+        //     ]
+        // ]);
     }
     catch(Throwable $exception){
         sendErrorMessageWithException(500, "Er is iets mis gegaan", $exception);

@@ -53,6 +53,8 @@
          * @param bool $fetch_once  Standaard op false. True = 1 record, false = alle records
          * @param array $order_by           Orderen op kolomnaam.
          *                                  Voorbeeld: ["exa.example_name ASC"].
+         * @param array $group_by           Groeperen op kolomnaam.
+         *                                  Voorbeeld: ["pro_name, pro_price"].
          * @return array|false
          */
         public function by_where(
@@ -62,7 +64,8 @@
             array $where, 
             array $execute, 
             bool $fetch_once = false,
-            array $order_by = []
+            array $order_by = [],
+            array $group_by = []
         ):array | false{
             $query = (new SelectQueryBuilder())
                 ->select(...$select)
@@ -75,6 +78,13 @@
                 }
             }
             
+            if ($group_by !== []) {
+                foreach ($group_by as $group) {
+                    $query->group_by($group);
+                }
+            }
+
+            // return array((string) $query);
             return $this->execute_query(
                 query: $query,
                 execute: $execute,
@@ -120,6 +130,8 @@
          * @param bool $fetch_once          Standaard op false. True = 1 record, false = alle records.
          * @param array $order_by           Orderen op kolomnaam.
          *                                  Voorbeeld: ["exa.example_name ASC"].
+         * @param array $group_by           Groeperen op kolomnaam.
+         *                                  Voorbeeld: ["pro_name, pro_price"].
          * @param bool $distinct            True = SELECT DISTINCT gebruiken.
          * @param bool $for_update          True = FOR UPDATE gebruiken.
 
@@ -132,8 +144,9 @@
             array $joins,
             array $where = [],
             array $execute = [],
-            bool $fetch_once = false,
             array $order_by = [],
+            array $group_by = [],
+            bool $fetch_once = false,
             bool $distinct = false,
             bool $for_update = false
         ): array|false {
@@ -176,6 +189,13 @@
                     $query->order_by_raw($order);
                 }
             }
+
+            if ($group_by !== []) {
+                foreach ($group_by as $group) {
+                    $query->group_by($group);
+                }
+            }
+
             return $this->execute_query(
                 query: $query,
                 execute: $execute,

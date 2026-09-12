@@ -22,6 +22,7 @@
         ];
 
         public const DISPLAY_USER = [
+            "usr.usr_id",
             "usr.usr_name",
             "usr.usr_email",
             "usr.usr_profile_photo_url"

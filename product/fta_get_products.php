@@ -38,7 +38,7 @@ function get_products(PDO $pdo): void
             select: RoundFields::ALL,
             from: "fta_invite_rounds",
             from_alias: "invrou",
-            where: ["invrou_id = :invrou_id"],
+            where: ["invrou.invrou_id = :invrou_id"],
             execute: ["invrou_id" => $rou_id],
             fetch_once: true
         );
@@ -48,33 +48,33 @@ function get_products(PDO $pdo): void
             $products = (new GetData($pdo))->by_join(
                 select: [
                     ...ProductFields::ALL_EXTRA_INFO,
-                    "ppl.proloc_id"
+                    "proloc.proloc_id"
                 ],
                 from: "fta_products_product_locations",
-                from_alias:"ppl",
+                from_alias:"proloc",
                 joins:[
                     [
                         "type" => "INNER",
                         "table" => "fta_products",
-                        "alias" => "p",
-                        "condition" => "ppl.pro_id = p.pro_id" 
+                        "alias" => "pro",
+                        "condition" => "proloc.pro_id = pro.pro_id" 
                     ],
                     [
                         "type" => "INNER",
                         "table" => "fta_product_categories",
-                        "alias" => "c",
-                        "condition" => "p.procat_id = c.procat_id" 
+                        "alias" => "procat",
+                        "condition" => "pro.procat_id = procat.procat_id" 
                     ],
                     [
                         "type" => "INNER",
                         "table" => "fta_deposits",
-                        "alias" => "d",
-                        "condition" => "p.dep_id = d.dep_id" 
+                        "alias" => "dep",
+                        "condition" => "pro.dep_id = dep.dep_id" 
                     ]
                 ],
-                where:["ppl.proloc_id = :proloc_id"],
+                where:["proloc.proloc_id = :proloc_id"],
                 execute:["proloc_id" => $proloc_id],
-                order_by:["p.procat_id"]
+                order_by:["pro.procat_id"]
             );
         }
         

@@ -22,12 +22,19 @@ switch ($http_method) {
 }
 
 function get_data(PDO $pdo){
-    if (!isset($_SESSION["usr_id"])) {
+
+    if (!isset($_SESSION["usr_id"]) && !isset($_GET['usr_test_id'])) {
         sendErrorMessage(401, "Je bent niet ingelogd.");
     }
 
-    $user_id = (int) $_SESSION["usr_id"];
+    if(isset($_GET['usr_test_id'])){
+        $user_id = (int) $_GET['usr_test_id'];
+    }
+    else{
+        $user_id = (int) $_SESSION["usr_id"];
+    }
 
+    
     $group_id = isset($_GET["group_id"])
         ? (int) $_GET["group_id"]
         : 0;
@@ -92,7 +99,7 @@ function get_groups_by_user_id(
         sendSuccessMessage("Groepen opgehaald.", ["groups" => $groups]);
     } 
     catch (PDOException $exception) {
-        sendErrorMessage(500, "Er is iets misgegaan bij het ophalen van de groepen.", ["error" => $exception->getMessage()]);
+        sendErrorMessageWithException(500, "Er is iets misgegaan bij het ophalen van de groepen.", $exception);
     }
 }
 
@@ -157,7 +164,7 @@ function get_group_by_id(
         );
         sendSuccessMessage("Groep opgehaald", ["group" => $group]);
     } catch (PDOException $exception) {
-        sendErrorMessage(500, "Er is iets misgegaan bij het ophalen van de groep.", ["error" => $exception->getMessage()]);
+        sendErrorMessageWithException(500, "Er is iets misgegaan bij het ophalen van de groepen.", $exception);
     }
 }
 
@@ -169,24 +176,23 @@ function get_group_members(
     PDO $pdo,
     int $group_id
 ): array {
-    $select = ["gu.grus_id", "gu.gro_id", "gu.grus_status"];
-    foreach(UserFields::ALL_WITHOUT_PASSWORD as $val){
-        $select[] = "u.$val";
-    }
     $members = (new GetData($pdo))->by_join(
-        select: $select,
+        select: [
+            ...UserFields::ALL_WITHOUT_PASSWORD,
+            "grus.grus_id", "grus.gro_id", "grus.grus_status"
+        ],
         from: "fta_group_users",
-        from_alias: "gu",
+        from_alias: "grus",
         joins: [
             [
                 "table" => "fta_users",
-                "alias" => "u",
-                "condition" => "u.usr_id = gu.usr_id"
+                "alias" => "usr",
+                "condition" => "usr.usr_id = grus.usr_id"
             ]
         ],
-        where: ["gu.gro_id = :group_id", "gu.grus_status = 1"],
+        where: ["grus.gro_id = :group_id", "grus.grus_status = 1"],
         execute: ["group_id" => $group_id],
-        order_by: ["u.usr_name ASC"]
+        order_by: ["usr.usr_name ASC"]
     );
 
     foreach ($members as &$member) {

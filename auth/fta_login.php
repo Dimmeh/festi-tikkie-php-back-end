@@ -39,7 +39,8 @@ function authUser(PDO $pdo, array $data){
   $user = (new GetData($pdo)->by_where(
             select: UserFields::ALL,
             from: "fta_users",
-            where: ["usr_email = :usr_email"],
+            from_alias:"usr",
+            where: ["usr.usr_email = :usr_email"],
             execute: ["usr_email" => $usr_email],
             fetch_once: true
           ));

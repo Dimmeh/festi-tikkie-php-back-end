@@ -32,7 +32,7 @@ function get_data(PDO $pdo){
     }
 
     try{
-        $orders = (new GetData($pdo))->by_join(
+        $orders_with_users = (new GetData($pdo))->by_join(
             select: ProductFields::PRODUCT_WITH_USER,
             from: "fta_ordered_products",
             from_alias: "ordpro",
@@ -50,13 +50,31 @@ function get_data(PDO $pdo){
                     "condition" => "ordpro.pro_id = pro.pro_id"
                 ]
             ],
-            where: ["invrou_id = :invrou_id"],
+            where: ["ordpro.invrou_id = :invrou_id"],
             execute: ["invrou_id" => $invrou_id]
+        );
+
+        $summary_order = (new GetData($pdo))->by_join(
+            select: ProductFields::SUMMARY_ORDER,
+            from: "fta_ordered_products",
+            from_alias: "ordpro",
+            joins: [
+                [
+                    "type" => "INNER",
+                    "table" => "fta_products",
+                    "alias" => "pro",
+                    "condition" => "ordpro.pro_id = pro.pro_id"
+                ]
+            ],
+            where: ["ordpro.invrou_id = :invrou_id"],
+            execute: ["invrou_id" => $invrou_id],
+            group_by:["pro.pro_id"]
         );
 
         sendSuccessMessage('Succesvol order opgehaald', [
             "data" => [
-                ...$orders
+                "orders" => $orders_with_users,
+                "summary" => $summary_order
             ]
         ]);
     }
